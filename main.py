@@ -1,8 +1,5 @@
-def num_words(content):
-    word_count = 0
-    for word in content.split():
-        word_count += 1
-    return word_count
+from stats import get_num_words
+from stats import dict_to_list
 
 
 def get_book_text(file_path):
@@ -14,7 +11,25 @@ def get_book_text(file_path):
 
 def main():
     book = get_book_text("./books/frankenstein.txt")
-    print(f"Found {num_words(book)} total words")
+
+    list_string = ""
+    for dicts in dict_to_list(book):
+        for key, value in dicts:
+            if not key.isalpha():
+                continue
+            list_string += f"{key}: {value}\n"
+
+    report = f"""
+    ============ BOOKBOT ============
+    Analyzing book found at books/frankenstein.txt...
+    ----------- Word Count ----------
+    Found {get_num_words(book)} total words
+    --------- Character Count -------
+    {list_string}
+    ============= END ===============
+    """
+
+    print(report)
 
 
 main()
