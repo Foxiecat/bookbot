@@ -1,27 +1,29 @@
-def get_num_words(content):
-    word_count = 0
-    for word in content.split():
-        word_count += 1
-    return word_count
+class Stats:
+    def __init__(self, content):
+        self.content = content
 
+    def get_word_count(self):
+        word_count = 0
+        for word in self.content.split():
+            word_count += 1
+        return word_count
 
-def get_character_count(content):
-    char_count_dect = dict()
-    for character in content.lower():
-        if character in char_count_dect:
-            char_count_dect[character] += 1
-            continue
-        char_count_dect[character] = 1
-    return char_count_dect
+    def get_character_count(self):
+        char_count = {}
+        for character in self.content.lower():
+            if character in char_count:
+                char_count[character] += 1
+                continue
+            char_count[character] = 1
+        return char_count
 
+    @staticmethod
+    def sort_on(items):
+        return items["num"]
 
-def sort_on(items):
-    return items["num"]
-
-
-def dict_to_list(content):
-    list_of_dicts = []
-    character_dict = get_character_count(content)
-    for key, value in character_dict:
-        list_of_dicts.append({"char": key, "num": value})
-    return list_of_dicts.sort(reverse=True, key=sort_on)
+    def dict_to_list(self):
+        list_of_dicts = []
+        character_dict = self.get_character_count()
+        for key, value in character_dict.items():
+            list_of_dicts.append({"char": key, "num": value})
+        return sorted(list_of_dicts, reverse=True, key=self.sort_on)

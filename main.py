@@ -1,13 +1,31 @@
-from stats import get_num_words
-from stats import dict_to_list
+from stats import Stats
 
 
-class custom_iterable:
-    def __init__(self, data):
-        self.data = data
+class BookBot:
+    def run(self):
+        book = get_book_text("./books/frankenstein.txt")
+        stats = Stats(book)
 
-    def __iter__(self):
-        return iter(self.data)
+        char_list = stats.dict_to_list()
+
+        list_string = ""
+        for dictionary in char_list:
+            char = dictionary["char"]
+            num = dictionary["num"]
+            if not char.isalpha():
+                continue
+            list_string += f"{char}: {num}\n"
+
+        report = f"""
+============ BOOKBOT ============
+Analyzing book found at books/frankenstein.txt...
+----------- Word Count ----------
+Found {stats.get_word_count()} total words
+--------- Character Count -------
+{list_string}
+============= END ===============
+"""
+        print(report)
 
 
 def get_book_text(file_path):
@@ -17,29 +35,6 @@ def get_book_text(file_path):
     return file_contents
 
 
-def main():
-    book = get_book_text("./books/frankenstein.txt")
-
-    iterable_dict = custom_iterable(dict_to_list(book))
-
-    list_string = ""
-    for dicts in iterable_dict:
-        for key, value in dicts:
-            if not key.isalpha():
-                continue
-            list_string += f"{key}: {value}\n"
-
-    report = f"""
-    ============ BOOKBOT ============
-    Analyzing book found at books/frankenstein.txt...
-    ----------- Word Count ----------
-    Found {get_num_words(book)} total words
-    --------- Character Count -------
-    {list_string}
-    ============= END ===============
-    """
-
-    print(report)
-
-
-main()
+if __name__ == "__main__":
+    app = BookBot()
+    app.run()
