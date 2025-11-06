@@ -1,9 +1,14 @@
 from stats import Stats
+import sys
 
 
 class BookBot:
     def run(self):
-        book = get_book_text("./books/frankenstein.txt")
+        if len(sys.argv) == 1:
+            print("Usage: python3 main.py <path_to_book>")
+            sys.exit(1)
+
+        book = get_book_text(sys.argv[1])
         stats = Stats(book)
 
         char_list = stats.dict_to_list()
@@ -26,6 +31,7 @@ Found {stats.get_word_count()} total words
 ============= END ===============
 """
         print(report)
+        sys.exit(0)
 
 
 def get_book_text(file_path):
